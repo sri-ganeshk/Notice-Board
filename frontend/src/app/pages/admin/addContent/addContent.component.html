@@ -1,9 +1,8 @@
 <div class="add-content-container">
-
   <mat-card class="content-card">
     <mat-card-content>
-      <mat-tab-group (selectedTabChange)="onTabChange($event.index)" [selectedIndex]="activeTab()">
-        
+      <mat-tab-group>
+
         <!-- Notice Tab -->
         <mat-tab label="Add Notice">
           <ng-template matTabContent>
@@ -12,75 +11,54 @@
                 <mat-icon>note_add</mat-icon>
                 <h3>Create New Notice</h3>
               </div>
-              
-              <form [formGroup]="getNoticeForm()" (ngSubmit)="onSubmitNotice()" class="content-form">
-                <!-- Notice Title Field -->
+
+              <form [formGroup]="noticeForm" (ngSubmit)="onSubmitNotice()" class="content-form">
+                <!-- Notice Title -->
                 <mat-form-field appearance="outline" class="full-width">
                   <mat-label>Notice Title</mat-label>
-                  <input 
-                    matInput 
-                    formControlName="title" 
-                    placeholder="Enter notice title"
-                    maxlength="100">
+                  <input matInput formControlName="title" placeholder="Enter notice title" maxlength="100">
                   <mat-icon matSuffix>title</mat-icon>
-                  <mat-hint>{{ getNoticeForm().get('title')?.value?.length || 0 }}/100</mat-hint>
-                  <mat-error *ngIf="getNoticeForm().get('title')?.touched && getNoticeForm().get('title')?.invalid">
-                    {{ getErrorMessage('title', getNoticeForm()) }}
-                  </mat-error>
+                  <mat-hint>{{ noticeForm.get('title')?.value?.length || 0 }}/100</mat-hint>
+                  @if (noticeForm.get('title')?.touched && noticeForm.get('title')?.invalid) {
+                    <mat-error>{{ getErrorMessage('title', noticeForm) }}</mat-error>
+                  }
                 </mat-form-field>
 
-                <!-- Category Field -->
+                <!-- Category -->
                 <mat-form-field appearance="outline" class="full-width">
                   <mat-label>Category</mat-label>
                   <mat-select formControlName="category">
-                    <mat-option *ngFor="let category of categories" [value]="category.value">
-                      {{ category.label }}
-                    </mat-option>
+                    @for (category of categories; track category.value) {
+                      <mat-option [value]="category.value">{{ category.label }}</mat-option>
+                    }
                   </mat-select>
                   <mat-icon matSuffix>category</mat-icon>
-                  <mat-error *ngIf="getNoticeForm().get('category')?.touched && getNoticeForm().get('category')?.invalid">
-                    {{ getErrorMessage('category', getNoticeForm()) }}
-                  </mat-error>
+                  @if (noticeForm.get('category')?.touched && noticeForm.get('category')?.invalid) {
+                    <mat-error>{{ getErrorMessage('category', noticeForm) }}</mat-error>
+                  }
                 </mat-form-field>
 
-                <!-- Notice Content Field -->
+                <!-- Notice Content -->
                 <mat-form-field appearance="outline" class="full-width">
                   <mat-label>Notice Content</mat-label>
-                  <textarea 
-                    matInput 
-                    formControlName="content" 
-                    placeholder="Enter notice content"
-                    rows="8"
-                    maxlength="2000">
-                  </textarea>
+                  <textarea matInput formControlName="content" placeholder="Enter notice content" rows="8" maxlength="2000"></textarea>
                   <mat-icon matSuffix>description</mat-icon>
-                  <mat-hint>{{ getNoticeForm().get('content')?.value?.length || 0 }}/2000</mat-hint>
-                  <mat-error *ngIf="getNoticeForm().get('content')?.touched && getNoticeForm().get('content')?.invalid">
-                    {{ getErrorMessage('content', getNoticeForm()) }}
-                  </mat-error>
+                  <mat-hint>{{ noticeForm.get('content')?.value?.length || 0 }}/2000</mat-hint>
+                  @if (noticeForm.get('content')?.touched && noticeForm.get('content')?.invalid) {
+                    <mat-error>{{ getErrorMessage('content', noticeForm) }}</mat-error>
+                  }
                 </mat-form-field>
 
-                <!-- Notice Form Actions -->
                 <div class="form-actions">
-                  <button 
-                    mat-raised-button 
-                    color="primary" 
-                    type="submit" 
-                    [disabled]="getIsSubmittingNotice() || getNoticeForm().invalid"
-                    class="submit-btn">
-                    <mat-icon *ngIf="!getIsSubmittingNotice()">save</mat-icon>
-                    <mat-icon *ngIf="getIsSubmittingNotice()" class="spinning">refresh</mat-icon>
-                    {{ getIsSubmittingNotice() ? 'Creating Notice...' : 'Create Notice' }}
+                  <button mat-raised-button color="primary" type="submit"
+                    [disabled]="isSubmittingNotice() || noticeForm.invalid" class="submit-btn">
+                    @if (!isSubmittingNotice()) { <mat-icon>save</mat-icon> }
+                    @if (isSubmittingNotice()) { <mat-icon class="spinning">refresh</mat-icon> }
+                    {{ isSubmittingNotice() ? 'Creating Notice...' : 'Create Notice' }}
                   </button>
-                  
-                  <button 
-                    mat-stroked-button 
-                    type="button" 
-                    (click)="getNoticeForm().reset()"
-                    [disabled]="getIsSubmittingNotice()"
-                    class="reset-btn">
-                    <mat-icon>clear</mat-icon>
-                    Reset Form
+                  <button mat-stroked-button type="button" (click)="noticeForm.reset()"
+                    [disabled]="isSubmittingNotice()" class="reset-btn">
+                    <mat-icon>clear</mat-icon> Reset Form
                   </button>
                 </div>
               </form>
@@ -96,91 +74,62 @@
                 <mat-icon>event</mat-icon>
                 <h3>Create New Event</h3>
               </div>
-              
-              <form [formGroup]="getEventForm()" (ngSubmit)="onSubmitEvent()" class="content-form">
-                <!-- Event Title Field -->
+
+              <form [formGroup]="eventForm" (ngSubmit)="onSubmitEvent()" class="content-form">
+                <!-- Event Title -->
                 <mat-form-field appearance="outline" class="full-width">
                   <mat-label>Event Title</mat-label>
-                  <input 
-                    matInput 
-                    formControlName="title" 
-                    placeholder="Enter event title"
-                    maxlength="100">
+                  <input matInput formControlName="title" placeholder="Enter event title" maxlength="100">
                   <mat-icon matSuffix>title</mat-icon>
-                  <mat-hint>{{ getEventForm().get('title')?.value?.length || 0 }}/100</mat-hint>
-                  <mat-error *ngIf="getEventForm().get('title')?.touched && getEventForm().get('title')?.invalid">
-                    {{ getErrorMessage('title', getEventForm()) }}
-                  </mat-error>
+                  <mat-hint>{{ eventForm.get('title')?.value?.length || 0 }}/100</mat-hint>
+                  @if (eventForm.get('title')?.touched && eventForm.get('title')?.invalid) {
+                    <mat-error>{{ getErrorMessage('title', eventForm) }}</mat-error>
+                  }
                 </mat-form-field>
 
-                <!-- Event Date Field -->
+                <!-- Event Date -->
                 <mat-form-field appearance="outline" class="full-width">
                   <mat-label>Event Date</mat-label>
-                  <input 
-                    matInput 
-                    [matDatepicker]="picker" 
-                    formControlName="eventDate"
-                    placeholder="Select event date">
+                  <input matInput [matDatepicker]="picker" formControlName="eventDate" placeholder="Select event date">
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker #picker></mat-datepicker>
-                  <mat-error *ngIf="getEventForm().get('eventDate')?.touched && getEventForm().get('eventDate')?.invalid">
-                    {{ getErrorMessage('eventDate', getEventForm()) }}
-                  </mat-error>
+                  @if (eventForm.get('eventDate')?.touched && eventForm.get('eventDate')?.invalid) {
+                    <mat-error>{{ getErrorMessage('eventDate', eventForm) }}</mat-error>
+                  }
                 </mat-form-field>
 
-                <!-- Location Field -->
+                <!-- Location -->
                 <mat-form-field appearance="outline" class="full-width">
                   <mat-label>Location</mat-label>
-                  <input 
-                    matInput 
-                    formControlName="location" 
-                    placeholder="Enter event location"
-                    maxlength="200">
+                  <input matInput formControlName="location" placeholder="Enter event location" maxlength="200">
                   <mat-icon matSuffix>location_on</mat-icon>
-                  <mat-hint>{{ getEventForm().get('location')?.value?.length || 0 }}/200</mat-hint>
-                  <mat-error *ngIf="getEventForm().get('location')?.touched && getEventForm().get('location')?.invalid">
-                    {{ getErrorMessage('location', getEventForm()) }}
-                  </mat-error>
+                  <mat-hint>{{ eventForm.get('location')?.value?.length || 0 }}/200</mat-hint>
+                  @if (eventForm.get('location')?.touched && eventForm.get('location')?.invalid) {
+                    <mat-error>{{ getErrorMessage('location', eventForm) }}</mat-error>
+                  }
                 </mat-form-field>
 
-                <!-- Event Description Field -->
+                <!-- Event Description -->
                 <mat-form-field appearance="outline" class="full-width">
                   <mat-label>Event Description</mat-label>
-                  <textarea 
-                    matInput 
-                    formControlName="description" 
-                    placeholder="Enter event description"
-                    rows="8"
-                    maxlength="2000">
-                  </textarea>
+                  <textarea matInput formControlName="description" placeholder="Enter event description" rows="8" maxlength="2000"></textarea>
                   <mat-icon matSuffix>description</mat-icon>
-                  <mat-hint>{{ getEventForm().get('description')?.value?.length || 0 }}/2000</mat-hint>
-                  <mat-error *ngIf="getEventForm().get('description')?.touched && getEventForm().get('description')?.invalid">
-                    {{ getErrorMessage('description', getEventForm()) }}
-                  </mat-error>
+                  <mat-hint>{{ eventForm.get('description')?.value?.length || 0 }}/2000</mat-hint>
+                  @if (eventForm.get('description')?.touched && eventForm.get('description')?.invalid) {
+                    <mat-error>{{ getErrorMessage('description', eventForm) }}</mat-error>
+                  }
                 </mat-form-field>
 
-                <!-- Event Form Actions -->
                 <div class="form-actions">
-                  <button 
-                    mat-raised-button 
-                    color="primary" 
-                    type="submit" 
-                    [disabled]="getIsSubmittingEvent() || getEventForm().invalid"
-                    class="submit-btn">
-                    <mat-icon *ngIf="!getIsSubmittingEvent()">save</mat-icon>
-                    <mat-icon *ngIf="getIsSubmittingEvent()" class="spinning">refresh</mat-icon>
-                    {{ getIsSubmittingEvent() ? 'Creating Event...' : 'Create Event' }}
+                  <button mat-raised-button color="primary" type="submit"
+                    [disabled]="isSubmittingEvent() || eventForm.invalid" class="submit-btn">
+                    @if (!isSubmittingEvent()) { <mat-icon>save</mat-icon> }
+                    @if (isSubmittingEvent()) { <mat-icon class="spinning">refresh</mat-icon> }
+                    {{ isSubmittingEvent() ? 'Creating Event...' : 'Create Event' }}
                   </button>
-                  
-                  <button 
-                    mat-stroked-button 
-                    type="button" 
-                    (click)="getEventForm().reset()"
-                    [disabled]="getIsSubmittingEvent()"
-                    class="reset-btn">
-                    <mat-icon>clear</mat-icon>
-                    Reset Form
+                  <button mat-stroked-button type="button" (click)="eventForm.reset()"
+                    [disabled]="isSubmittingEvent()" class="reset-btn">
+                    <mat-icon>clear</mat-icon> Reset Form
                   </button>
                 </div>
               </form>

@@ -76,7 +76,7 @@ export class SignupComponent {
         },
         error: (error) => {
           this.isLoading.set(false);
-          this.errorMessage.set(error.message);
+          this.errorMessage.set(error.error?.message || 'Signup failed. Please try again.');
         }
       });
     } else {

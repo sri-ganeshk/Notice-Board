@@ -1,6 +1,7 @@
-import { Component, signal, OnInit } from '@angular/core';
+import { Component, signal, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NoticeService, Notice } from '../../core/services/notice.service';
+import { ToastService } from '../../core/services/toast.service';
 import { CommentsComponent } from '../../components/comments/comments.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,10 +27,9 @@ import { CommonModule } from '@angular/common';
   styleUrl: './notice.css'
 })
 export class NoticePage implements OnInit {
-  constructor(
-    private noticeService: NoticeService,
-    private route: ActivatedRoute
-  ) {}
+  private noticeService = inject(NoticeService);
+  private route = inject(ActivatedRoute);
+  private toast = inject(ToastService);
 
   data = signal<Notice | undefined>(undefined);
   errMsg = signal<string>('');
@@ -37,21 +37,23 @@ export class NoticePage implements OnInit {
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
-    
+
     if (id) {
-      // Load notice data
       this.noticeService.getNoticeById(id).subscribe({
         next: (response) => {
           this.data.set(response.data);
           this.loading.set(false);
         },
         error: (err) => {
-          this.errMsg.set(err.message);
+          const msg = err.error?.message || 'Failed to load notice';
+          this.errMsg.set(msg);
+          this.toast.error(msg);
           this.loading.set(false);
         }
       });
     } else {
-      this.errMsg.set('No ID provided in route parameters');
+      const msg = 'Notice not found';
+      this.errMsg.set(msg);
       this.loading.set(false);
     }
   }

@@ -14,7 +14,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
-    "start": "node dist/app.js"
+    "start": "node dist/app.js",
+    "seed": "ts-node scripts/seed.ts"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",

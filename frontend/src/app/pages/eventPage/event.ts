@@ -1,7 +1,8 @@
-import { Component, signal, OnInit } from '@angular/core';
+import { Component, signal, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EventService, Event } from '../../core/services/event.service';
 import { AuthService } from '../../core/services/auth.service';
+import { ToastService } from '../../core/services/toast.service';
 import { CommentsComponent } from '../../components/comments/comments.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -29,11 +30,10 @@ import { CommonModule } from '@angular/common';
   styleUrl: './event.css'
 })
 export class EventPage implements OnInit {
-  constructor(
-    private eventService: EventService,
-    private authService: AuthService,
-    private route: ActivatedRoute
-  ) {}
+  private eventService = inject(EventService);
+  private authService = inject(AuthService);
+  private route = inject(ActivatedRoute);
+  private toast = inject(ToastService);
 
   data = signal<Event | undefined>(undefined);
   errMsg = signal<string>('');
@@ -42,21 +42,23 @@ export class EventPage implements OnInit {
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
-    
+
     if (id) {
-      // Load event data
       this.eventService.getEventById(id).subscribe({
         next: (response) => {
           this.data.set(response.data);
           this.loading.set(false);
         },
         error: (err) => {
-          this.errMsg.set(err.message);
+          const msg = err.error?.message || 'Failed to load event';
+          this.errMsg.set(msg);
+          this.toast.error(msg);
           this.loading.set(false);
         }
       });
     } else {
-      this.errMsg.set('No ID provided in route parameters');
+      const msg = 'Event not found';
+      this.errMsg.set(msg);
       this.loading.set(false);
     }
   }
@@ -65,17 +67,18 @@ export class EventPage implements OnInit {
     const eventId = this.route.snapshot.paramMap.get('id');
     if (eventId && !this.registering()) {
       this.registering.set(true);
-      this.errMsg.set(''); // Clear any previous errors
-      
+      this.errMsg.set('');
+
       this.eventService.registerForEvent(eventId).subscribe({
         next: (response) => {
-          // Update the event data with the new registration
           this.data.set(response.data);
           this.registering.set(false);
+          this.toast.success('Registered for event successfully!');
         },
         error: (err) => {
-          console.error('Failed to register for event:', err);
-          this.errMsg.set('Failed to register for event. Please try again.');
+          const msg = err.error?.message || 'Failed to register for event';
+          this.errMsg.set(msg);
+          this.toast.error(msg);
           this.registering.set(false);
         }
       });

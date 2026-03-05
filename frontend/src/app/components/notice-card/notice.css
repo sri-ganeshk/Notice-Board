@@ -1,7 +1,15 @@
 .notice-card {
-  margin-bottom: 16px;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
+  margin-bottom: 0;
+  border: 1px solid #e8eaf6 !important;
+  border-radius: 12px !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  overflow: hidden;
+}
+
+.notice-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(63, 81, 181, 0.12) !important;
+  border-color: #c5cae9 !important;
 }
 
 .notice-meta {
@@ -9,7 +17,8 @@
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
+  margin-top: 4px;
 }
 
 .notice-date {
@@ -17,13 +26,25 @@
   align-items: center;
   gap: 4px;
   color: var(--text-gray);
-  font-size: 0.9rem;
+  font-size: 0.82rem;
+}
+
+.notice-date mat-icon {
+  font-size: 15px;
+  width: 15px;
+  height: 15px;
 }
 
 .notice-content {
   margin: 0;
-  line-height: 1.6;
-  color: var(--text-black);
+  line-height: 1.65;
+  color: var(--text-gray);
+  font-size: 0.9rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .notice-author {
@@ -31,16 +52,30 @@
   align-items: center;
   gap: 4px;
   color: var(--text-gray);
-  font-size: 0.9rem;
+  font-size: 0.82rem;
+}
+
+.notice-author mat-icon {
+  font-size: 15px;
+  width: 15px;
+  height: 15px;
 }
 
 .author-name {
   font-weight: 500;
 }
 
-mat-chip.category-academic,
-mat-chip.category-sports,
+mat-chip.category-academic {
+  background-color: #e3f2fd !important;
+  color: #1565c0 !important;
+}
+
+mat-chip.category-sports {
+  background-color: #e8f5e9 !important;
+  color: #2e7d32 !important;
+}
+
 mat-chip.category-cultural {
-  background-color: var(--light-blue);
-  color: var(--primary-blue);
+  background-color: #fce4ec !important;
+  color: #ad1457 !important;
 }

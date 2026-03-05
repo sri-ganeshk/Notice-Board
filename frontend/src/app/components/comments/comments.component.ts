@@ -1,5 +1,6 @@
-import { Component, Input, signal, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, signal, OnInit, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { CommentsService, Comment } from '../../core/services/comments.services';
+import { ToastService } from '../../core/services/toast.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -26,20 +27,20 @@ import { CommonModule } from '@angular/common';
   styleUrl: './comments.component.css'
 })
 export class CommentsComponent implements OnInit, OnChanges {
+  private commentsService = inject(CommentsService);
+  private toast = inject(ToastService);
+
   @Input() itemId!: string;
   @Input() itemType!: 'notice' | 'event';
   @Input() placeholder: string = 'Share your thoughts...';
 
   comments = signal<Comment[]>([]);
   commentsLoading = signal<boolean>(true);
+  submitting = signal<boolean>(false);
   newCommentText = signal<string>('');
   errMsg = signal<string>('');
 
-  constructor(private commentsService: CommentsService) {}
-
-  ngOnInit() {
-    this.loadComments();
-  }
+  ngOnInit() { this.loadComments(); }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['itemId'] && !changes['itemId'].firstChange) {
@@ -52,15 +53,15 @@ export class CommentsComponent implements OnInit, OnChanges {
       this.commentsLoading.set(true);
       this.commentsService.getComments(this.itemId, this.itemType).subscribe({
         next: (response) => {
-          // Sort comments with latest first (by createdAt date)
-          const sortedComments = response.data.sort((a, b) => 
+          const sorted = response.data.sort((a, b) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
           );
-          this.comments.set(sortedComments);
+          this.comments.set(sorted);
           this.commentsLoading.set(false);
         },
         error: (err) => {
-          console.error('Failed to load comments:', err);
+          const msg = err.error?.message || 'Failed to load comments';
+          this.errMsg.set(msg);
           this.commentsLoading.set(false);
         }
       });
@@ -69,25 +70,28 @@ export class CommentsComponent implements OnInit, OnChanges {
 
   onSubmitComment() {
     const text = this.newCommentText().trim();
-    
-    if (this.itemId && text) {
-      this.commentsService.addComment(this.itemId, this.itemType, text).subscribe({
-        next: (response) => {
-          // Add the new comment at the beginning (latest first)
-          const currentComments = this.comments();
-          this.comments.set([response.data, ...currentComments]);
-          this.newCommentText.set(''); // Clear the form
-          this.errMsg.set(''); // Clear any errors
-        },
-        error: (err) => {
-          console.error('Failed to add comment:', err);
-          this.errMsg.set('Failed to add comment');
-        }
-      });
-    }
+    if (!this.itemId || !text || this.submitting()) return;
+
+    this.submitting.set(true);
+    this.commentsService.addComment(this.itemId, this.itemType, text).subscribe({
+      next: (response) => {
+        this.comments.update(prev => [response.data, ...prev]);
+        this.newCommentText.set('');
+        this.errMsg.set('');
+        this.submitting.set(false);
+        this.toast.success('Comment added!');
+      },
+      error: (err) => {
+        const msg = err.error?.message || 'Failed to add comment';
+        this.errMsg.set(msg);
+        this.toast.error(msg);
+        this.submitting.set(false);
+      }
+    });
   }
 
   formatDate(dateString: string): string {
     return new Date(dateString).toLocaleString();
   }
 }
+

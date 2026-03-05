@@ -1,5 +1,6 @@
-import { Component, signal, OnInit } from '@angular/core';
+import { Component, signal, OnInit, inject, DestroyRef } from '@angular/core';
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService, User } from './core/services/auth.service';
@@ -12,29 +13,27 @@ import { filter } from 'rxjs/operators';
   styleUrl: './app.css'
 })
 export class App implements OnInit {
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private destroyRef = inject(DestroyRef);
+
   protected readonly title = signal('frontend');
   currentUser: User | null = null;
   showNavbar = signal(false);
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
-
   ngOnInit(): void {
-    // Subscribe to user authentication state
-    this.authService.currentUser$.subscribe(user => {
-      this.currentUser = user;
-      this.showNavbar.set(!!user); // Show navbar only when user is logged in
-    });
+    this.authService.currentUser$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(user => {
+        this.currentUser = user;
+        this.showNavbar.set(!!user);
+      });
 
-    // Listen to route changes to update navbar visibility
     this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
+      filter(event => event instanceof NavigationEnd),
+      takeUntilDestroyed(this.destroyRef)
     ).subscribe((event: NavigationEnd) => {
       const url = event.url;
-      
-      // Show navbar only on authenticated pages (not login/signup)
       this.showNavbar.set(!url.includes('/login') && !url.includes('/signup') && !!this.currentUser);
     });
   }
@@ -43,12 +42,7 @@ export class App implements OnInit {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
-  
-  navigateToDashboard() {
-    this.router.navigate(['/dashboard']);
-  }
-  
-  navigateToAdmin() {
-    this.router.navigate(['/admin']);
-  }
+
+  navigateToDashboard() { this.router.navigate(['/dashboard']); }
+  navigateToAdmin() { this.router.navigate(['/admin']); }
 }

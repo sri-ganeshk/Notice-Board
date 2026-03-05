@@ -1,81 +1,81 @@
 .notice-container {
-  max-width: 800px;
+  max-width: 860px;
   margin: 0 auto;
-  padding: 20px;
-  background-color: var(--white);
+  padding: 24px 20px;
 }
 
+/* ─── Loading ─── */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+  color: var(--text-gray);
+}
+
+/* ─── Error ─── */
 .error-card {
-  padding: 16px;
-  background-color: #ffebee;
-  border-left: 4px solid var(--error-red);
   margin-bottom: 16px;
 }
 
 .error-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   color: var(--error-red);
+  font-size: 0.9rem;
 }
 
+/* ─── Notice Card ─── */
 .notice-card {
   background: var(--white);
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  padding: 24px;
+  border-radius: 16px !important;
+  box-shadow: var(--shadow-md) !important;
+  margin-bottom: 20px;
 }
 
 .notice-meta {
-  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+.posted-by {
   color: var(--text-gray);
-  font-size: 14px;
+  font-size: 0.85rem;
 }
 
 .notice-text {
-  line-height: 1.6;
+  line-height: 1.75;
   margin-bottom: 16px;
+  color: var(--text-black);
+  font-size: 0.95rem;
 }
 
 .notice-date {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   color: var(--text-gray);
-  font-size: 14px;
+  font-size: 0.85rem;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-gray);
 }
 
-.comments-section {
-  background: var(--white);
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  padding: 24px;
-  margin-top: 24px;
+.notice-date mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
 }
 
-.add-comment-card {
-  margin-bottom: 24px;
-  padding: 16px;
-  background: var(--light-gray);
-  border-radius: 4px;
-}
-
-.comment-card {
-  background: var(--light-gray);
-  border-left: 3px solid var(--primary-blue);
-  border-radius: 4px;
-  padding: 16px;
-  margin-bottom: 16px;
-}
-
-.comment-author {
-  font-weight: 500;
-  margin-bottom: 4px;
-}
-
-.comment-date {
-  font-size: 12px;
-  color: var(--text-gray);
-  margin-bottom: 8px;
-}
-
+/* ─── Comments ─── */
 .comment-input {
   width: 100%;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .comment-actions {
@@ -83,27 +83,21 @@
   justify-content: flex-end;
 }
 
-.comment-actions button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* Comments List */
 .comments-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .comment-card {
   background: var(--light-gray);
   border-left: 3px solid var(--primary-blue);
+  border-radius: 8px;
   transition: box-shadow 0.2s ease;
 }
 
 .comment-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
 }
 
 .comment-avatar {
@@ -115,30 +109,32 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .comment-author {
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 0.95rem;
+  font-weight: 600;
   color: var(--text-black);
 }
 
 .comment-date {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--text-gray);
 }
 
 .comment-text {
-  margin: 8px 0 0 0;
-  line-height: 1.5;
+  margin: 6px 0 0;
+  line-height: 1.55;
   color: var(--text-black);
+  font-size: 0.9rem;
   white-space: pre-wrap;
 }
 
-/* No Comments State */
 .no-comments {
   text-align: center;
-  padding: 40px;
+  padding: 40px 20px;
   color: var(--text-gray);
 }
 
@@ -146,46 +142,15 @@
   font-size: 48px;
   width: 48px;
   height: 48px;
-  margin-bottom: 16px;
-  opacity: 0.5;
+  margin-bottom: 12px;
+  opacity: 0.4;
+  display: block;
+  margin-inline: auto;
 }
 
-.no-comments p {
-  margin: 0;
-  font-size: 16px;
-}
-
-/* Responsive Design */
+/* ─── Responsive ─── */
 @media (max-width: 768px) {
   .notice-container {
     padding: 16px;
-  }
-  
-  .notice-meta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-  
-  .comments-section {
-    padding: 16px;
-  }
-  
-  .comment-input {
-    font-size: 16px; /* Prevents zoom on iOS */
-  }
-}
-
-@media (max-width: 480px) {
-  .notice-container {
-    padding: 12px;
-  }
-  
-  .notice-text {
-    font-size: 14px;
-  }
-  
-  .comments-header h3 {
-    font-size: 18px;
   }
 }

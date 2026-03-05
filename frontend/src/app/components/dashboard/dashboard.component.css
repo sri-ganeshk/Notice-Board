@@ -4,38 +4,41 @@
   margin: 0 auto;
 }
 
+/* ─── Navigation Tabs ─── */
 .navigation-tabs {
   display: flex;
-  gap: 10px;
+  gap: 4px;
   margin-bottom: 20px;
   background: var(--white);
-  padding: 10px;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
+  padding: 6px;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
 }
 
 .navigation-tabs button {
-  padding: 12px 24px;
+  padding: 10px 24px;
   border: none;
   background: transparent;
   color: var(--text-gray);
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
 }
 
 .navigation-tabs button:hover {
   background: var(--light-gray);
+  color: var(--text-black);
 }
 
 .navigation-tabs button.active {
   background: var(--primary-blue);
   color: var(--white);
+  box-shadow: 0 2px 8px rgba(63, 81, 181, 0.35);
 }
 
+/* ─── Content Area ─── */
 .dashboard-content {
-  background: var(--white);
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  min-height: 500px;
+  background: transparent;
 }

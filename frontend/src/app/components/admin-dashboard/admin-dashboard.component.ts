@@ -1,6 +1,7 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, inject, DestroyRef } from '@angular/core';
 import { AuthService, User } from '../../core/services/auth.service';
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,35 +16,32 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./admin-dashboard.component.css']
 })
 export class AdminDashboardComponent implements OnInit {
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private destroyRef = inject(DestroyRef);
+
   currentUser: User | null = null;
   activeTab = signal('add-content');
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
-
   ngOnInit(): void {
-    this.authService.currentUser$.subscribe(user => {
-      this.currentUser = user;
-      if (!user) {
-        this.router.navigate(['/login']);
-      } else if (user.role !== 'admin') {
-        this.router.navigate(['/dashboard']);
-      }
-    });
+    this.authService.currentUser$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(user => {
+        this.currentUser = user;
+        if (!user) {
+          this.router.navigate(['/login']);
+        } else if (user.role !== 'admin') {
+          this.router.navigate(['/dashboard']);
+        }
+      });
 
-    // Listen to route changes to update active tab
     this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
+      filter(event => event instanceof NavigationEnd),
+      takeUntilDestroyed(this.destroyRef)
     ).subscribe((event: NavigationEnd) => {
-      const url = event.url;
-      if (url.includes('/admin/add-content')) {
-        this.activeTab.set('add-content');
-      }
+      if (event.url.includes('/admin/add-content')) this.activeTab.set('add-content');
     });
 
-    // Navigate to add-content by default if on admin root
     const currentUrl = this.router.url;
     if (currentUrl === '/admin' || currentUrl === '/admin/') {
       this.router.navigate(['/admin/add-content']);

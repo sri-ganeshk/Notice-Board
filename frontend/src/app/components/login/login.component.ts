@@ -69,10 +69,20 @@ export class LoginComponent implements OnInit {
         },
         error: (error) => {
           this.isLoading.set(false);
-          this.errorMessage.set(error.message);
+          this.errorMessage.set(error.error?.message || 'Invalid email or password');
         }
       });
+    } else {
+      this.loginForm.markAllAsTouched();
     }
+  }
+
+  fillDemo(role: 'admin' | 'user'): void {
+    const creds = role === 'admin'
+      ? { email: 'admin@gmail.com', password: '123456789' }
+      : { email: 'user@gmail.com',  password: '12345689' };
+    this.loginForm.setValue(creds);
+    this.errorMessage.set('');
   }
 
   get email() { return this.loginForm.controls.email; }
