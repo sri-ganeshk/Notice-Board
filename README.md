@@ -2,8 +2,6 @@
 
 A full-stack application built with Angular (Frontend) and Express/MongoDB (Backend) to manage academic, sports, and cultural notices, as well as upcoming events. It includes user authentication, role-based access, and commenting systems for both events and notices.
 
-The project is structured as a monorepo and configured to be easily deployed to **Vercel** with a single click.
-
 ## 🚀 Technologies Used
 * **Frontend**: Angular, TypeScript, RxJS
 * **Backend**: Node.js, Express, MongoDB (Mongoose), JWT Auth
