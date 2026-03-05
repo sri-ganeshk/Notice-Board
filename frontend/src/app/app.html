@@ -1,0 +1,29 @@
+<div class="app-container">
+  <!-- Global Navigation Bar -->
+  <nav class="navbar" *ngIf="showNavbar()">
+    <div class="navbar-brand">
+      <h1 class="brand-title clickable-title" (click)="navigateToDashboard()">Inn Dashboard</h1>
+    </div>
+    <div class="navbar-user" *ngIf="currentUser">
+      <div class="user-info">
+        <span class="user-name">{{ currentUser.fullName }}</span>
+        <span class="user-role">{{ currentUser.role }}</span>
+      </div>
+      <div class="navbar-actions">
+        <button 
+          *ngIf="currentUser.role === 'admin'" 
+          mat-stroked-button 
+          class="btn-admin"
+          (click)="navigateToAdmin()">
+          Admin Panel
+        </button>
+        <button mat-raised-button color="warn" class="btn-logout" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="main-content" [class.with-navbar]="showNavbar()">
+    <router-outlet></router-outlet>
+  </div>
+</div>

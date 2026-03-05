@@ -1,0 +1,51 @@
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background: var(--primary-blue);
+  color: var(--white);
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.brand-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--white);
+}
+
+.navbar-user {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-name {
+  font-weight: 500;
+  color: var(--white);
+}
+
+.user-role {
+  font-size: 0.85rem;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: var(--white);
+}
+
+.main-content {
+  flex: 1;
+  background-color: var(--white);
+}
+
+.main-content.with-navbar {
+  background-color: var(--light-gray);
+}
+

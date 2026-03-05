@@ -1,0 +1,16 @@
+<div class="admin-dashboard-container">
+  <!-- Header -->
+  <div class="admin-header">
+    <h2>Admin Dashboard</h2>
+    <button mat-stroked-button (click)="navigateToUserDashboard()">
+      <mat-icon>dashboard</mat-icon>
+      Back to Dashboard
+    </button>
+  </div>
+
+
+  <!-- Child routes will be displayed here -->
+  <div class="admin-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

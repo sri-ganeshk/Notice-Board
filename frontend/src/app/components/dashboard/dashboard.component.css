@@ -1,0 +1,41 @@
+.dashboard-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.navigation-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  background: var(--white);
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+}
+
+.navigation-tabs button {
+  padding: 12px 24px;
+  border: none;
+  background: transparent;
+  color: var(--text-gray);
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.navigation-tabs button:hover {
+  background: var(--light-gray);
+}
+
+.navigation-tabs button.active {
+  background: var(--primary-blue);
+  color: var(--white);
+}
+
+.dashboard-content {
+  background: var(--white);
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  min-height: 500px;
+}

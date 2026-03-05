@@ -1,0 +1,127 @@
+/* Comments Section */
+.comments-section {
+  background: var(--white);
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.comments-header {
+  margin-bottom: 24px;
+}
+
+.comments-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--text-black);
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.add-comment-card {
+  margin-bottom: 24px;
+  background: var(--light-gray);
+  box-shadow: none;
+  border: 1px solid #e0e0e0;
+}
+
+.comment-input {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.comment-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Error Handling */
+.error-card {
+  margin-bottom: 20px;
+  background-color: #ffebee;
+  border-left: 4px solid var(--error-red);
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--error-red);
+  font-weight: 500;
+}
+
+/* Loading States */
+.comments-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+  color: var(--text-gray);
+}
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.comment-card {
+  background: var(--light-gray);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.comment-avatar {
+  background-color: var(--primary-blue);
+  color: var(--white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.comment-avatar mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.comment-author {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.comment-date {
+  font-size: 12px;
+  color: var(--text-gray);
+}
+
+.comment-text {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--text-black);
+}
+
+.no-comments {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-gray);
+}
+
+.no-comments mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.no-comments p {
+  margin: 0;
+  font-size: 16px;
+}

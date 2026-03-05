@@ -1,0 +1,73 @@
+<div class="comments-section">
+  <div class="comments-header">
+    <h3>
+      <mat-icon>comment</mat-icon>
+      Comments ({{ comments().length }})
+    </h3>
+  </div>
+
+  <!-- Add Comment Form -->
+  <mat-card class="add-comment-card">
+    <mat-card-content>
+      <mat-form-field appearance="outline" class="comment-input">
+        <mat-label>Add a comment</mat-label>
+        <textarea 
+          matInput 
+          [(ngModel)]="newCommentText"
+          [placeholder]="placeholder"
+          rows="3"
+          maxlength="500">
+        </textarea>
+        <mat-hint>{{ 500 - newCommentText().length }} characters remaining</mat-hint>
+      </mat-form-field>
+      <div class="comment-actions">
+        <button 
+          mat-raised-button 
+          color="primary" 
+          (click)="onSubmitComment()"
+          [disabled]="!newCommentText().trim()">
+          <mat-icon>send</mat-icon>
+          Post Comment
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Error Message -->
+  <mat-card *ngIf="errMsg()" class="error-card">
+    <mat-card-content>
+      <div class="error-message">
+        <mat-icon color="warn">error</mat-icon>
+        <span>{{ errMsg() }}</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Comments Loading -->
+  <div *ngIf="commentsLoading()" class="comments-loading">
+    <mat-progress-spinner mode="indeterminate" diameter="30"></mat-progress-spinner>
+    <span>Loading comments...</span>
+  </div>
+
+  <!-- Comments List -->
+  <div *ngIf="!commentsLoading()" class="comments-list">
+    <mat-card *ngFor="let comment of comments()" class="comment-card">
+      <mat-card-header>
+        <div mat-card-avatar class="comment-avatar">
+          <mat-icon>person</mat-icon>
+        </div>
+        <mat-card-title class="comment-author">{{ comment.author.fullName }}</mat-card-title>
+        <mat-card-subtitle class="comment-date">{{ formatDate(comment.createdAt) }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="comment-text">{{ comment.text }}</p>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- No Comments Message -->
+    <div *ngIf="comments().length === 0" class="no-comments">
+      <mat-icon>comment_outlined</mat-icon>
+      <p>No comments yet. Be the first to comment!</p>
+    </div>
+  </div>
+</div>

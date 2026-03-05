@@ -1,0 +1,55 @@
+<div class="notice-container">
+  <!-- Loading Spinner -->
+  <div *ngIf="loading()" class="loading-container">
+    <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+    <p>Loading notice...</p>
+  </div>
+
+  <!-- Error Message -->
+  <mat-card *ngIf="errMsg() && !loading()" class="error-card">
+    <mat-card-content>
+      <div class="error-message">
+        <mat-icon color="warn">error</mat-icon>
+        <span>{{ errMsg() }}</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Notice Content -->
+  <div *ngIf="data() && !loading()" class="notice-content">
+    <!-- Main Notice Card -->
+    <mat-card class="notice-card">
+      <mat-card-header>
+        <mat-card-title>{{ data()?.title }}</mat-card-title>
+        <mat-card-subtitle>
+          <div class="notice-meta">
+            <mat-chip [color]="getCategoryColor(data()?.category)" selected>
+              <mat-icon matChipAvatar>{{ getCategoryIcon(data()?.category) }}</mat-icon>
+              {{ data()?.category | titlecase }}
+            </mat-chip>
+            <span class="posted-by">Posted by: {{ data()?.postedBy?.fullName }}</span>
+          </div>
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="notice-text">
+          {{ data()?.content }}
+        </div>
+        <div class="notice-date">
+          <mat-icon>schedule</mat-icon>
+          <span>{{ formatDate(data()?.createdAt || '') }}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-divider></mat-divider>
+
+    <!-- Comments Section -->
+    <app-comments 
+      [itemId]="data()?._id || ''" 
+      itemType="notice"
+      placeholder="Share your thoughts...">
+    </app-comments>
+  </div>
+</div>

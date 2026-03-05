@@ -1,0 +1,47 @@
+<!-- export interface Event {
+  _id: string;
+  title: string;
+  description: string;
+  eventDate: string;
+  location: string;
+  registeredUsers: User[];
+  createdBy: User;
+  createdAt: string;
+} -->
+
+<mat-card class="event-card" [id]="event?._id" (click)="onEventClick()" style="cursor: pointer;">
+  <mat-card-header>
+    <mat-card-title>{{event?.title}}</mat-card-title>
+    <mat-card-subtitle>
+      <div class="event-meta">
+        <span class="event-location">
+          <mat-icon>place</mat-icon>
+          {{event?.location}}
+        </span>
+        <span class="event-date">
+          <mat-icon>event</mat-icon>
+          {{event?.eventDate | date:'MMM dd, yyyy'}}
+        </span>
+      </div>
+    </mat-card-subtitle>
+  </mat-card-header>
+  
+  <mat-card-content>
+    <p class="event-description">{{event?.description}}</p>
+  </mat-card-content>
+  
+  <mat-card-actions>
+    <div class="event-footer">
+      <div class="event-author">
+        <mat-icon>person</mat-icon>
+        <span class="author-name">{{event?.createdBy?.fullName}}</span>
+      </div>
+      <div class="event-registered">
+        <button mat-button color="primary" [matBadge]="event?.registeredUsers?.length || 0" matBadgeColor="accent">
+          <mat-icon>group</mat-icon>
+          Registered
+        </button>
+      </div>
+    </div>
+  </mat-card-actions>
+</mat-card>

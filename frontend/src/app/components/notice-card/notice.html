@@ -1,0 +1,43 @@
+<!-- export interface Notice {
+  _id: string;
+  title: string;
+  content: string;
+  category: 'academic' | 'sports' | 'cultural';
+  postedBy: {
+    _id: string;
+    fullName: string;
+    email: string;
+  };
+  createdAt: string;
+} -->
+
+<mat-card class="notice-card" [id]="notice?._id" (click)="onNoticeClick()" style="cursor: pointer;">
+  <mat-card-header>
+    <mat-card-title>{{notice?.title}}</mat-card-title>
+    <mat-card-subtitle>
+      <div class="notice-meta">
+        <mat-chip-set>
+          <mat-chip [ngClass]="'category-' + notice?.category">
+            <mat-icon>{{getCategoryIcon(notice?.category)}}</mat-icon>
+            {{notice?.category | titlecase}}
+          </mat-chip>
+        </mat-chip-set>
+        <span class="notice-date">
+          <mat-icon>schedule</mat-icon>
+          {{notice?.createdAt | date:'MMM dd, yyyy'}}
+        </span>
+      </div>
+    </mat-card-subtitle>
+  </mat-card-header>
+  
+  <mat-card-content>
+    <p class="notice-content">{{notice?.content}}</p>
+  </mat-card-content>
+  
+  <mat-card-actions align="end">
+    <div class="notice-author">
+      <mat-icon>person</mat-icon>
+      <span class="author-name">{{notice?.postedBy?.fullName}}</span>
+    </div>
+  </mat-card-actions>
+</mat-card>

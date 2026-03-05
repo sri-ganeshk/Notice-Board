@@ -1,0 +1,46 @@
+.notice-card {
+  margin-bottom: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+}
+
+.notice-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.notice-date {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-gray);
+  font-size: 0.9rem;
+}
+
+.notice-content {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--text-black);
+}
+
+.notice-author {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-gray);
+  font-size: 0.9rem;
+}
+
+.author-name {
+  font-weight: 500;
+}
+
+mat-chip.category-academic,
+mat-chip.category-sports,
+mat-chip.category-cultural {
+  background-color: var(--light-blue);
+  color: var(--primary-blue);
+}

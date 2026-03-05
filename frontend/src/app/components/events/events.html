@@ -1,0 +1,49 @@
+<div class="events-container">
+    <!-- Search and Filter Controls -->
+    <div class="filter-controls">
+        <div class="search-section">
+            <mat-form-field appearance="outline" class="search-field">
+                <mat-label>Search events...</mat-label>
+                <input 
+                    matInput 
+                    [value]="searchTerm()"
+                    (input)="onSearchChange($event.target.value)"
+                    placeholder="Search by title, description, or location">
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline" class="filter-field">
+                <mat-label>Sort by</mat-label>
+                <mat-select 
+                    [value]="sortBy()"
+                    (selectionChange)="onSortChange($event.value)">
+                    <mat-option *ngFor="let option of sortOptions" [value]="option.value">
+                        {{ option.label }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            
+            <button 
+                mat-button 
+                color="primary" 
+                (click)="clearFilters()"
+                class="clear-filters-btn">
+                <mat-icon>clear</mat-icon>
+                Clear Filters
+            </button>
+        </div>
+    </div>
+
+    <!-- Results Info -->
+    <div class="results-info">
+        <p>Showing {{ filteredEvents().length }} of {{ events().length }} events</p>
+    </div>
+
+    <div *ngIf="loading()">Loading events...</div>
+    <div *ngIf="errorMessage()" class="error-message">{{errorMessage()}}</div>
+    <div class="events-scroll-wrapper">
+        <div *ngFor="let event of filteredEvents()" class="event-wrapper">
+            <app-event-card [event]="event"/>
+        </div>
+    </div>
+</div>

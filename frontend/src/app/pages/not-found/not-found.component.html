@@ -1,0 +1,39 @@
+<div class="not-found-container">
+  <mat-card class="not-found-card">
+    <mat-card-content>
+      <div class="not-found-content">
+        <div class="error-icon">
+          <mat-icon>error_outline</mat-icon>
+        </div>
+        
+        <h1 class="error-code">404</h1>
+        
+        <h2 class="error-title">Page Not Found</h2>
+        
+        <p class="error-message">
+          Sorry, the page you are looking for doesn't exist or has been moved.
+        </p>
+        
+        <div class="error-actions">
+          <button mat-raised-button color="primary" (click)="goHome()">
+            <mat-icon>home</mat-icon>
+            Go to Dashboard
+          </button>
+          
+          <button mat-stroked-button (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon>
+            Go Back
+          </button>
+        </div>
+        
+        <div class="helpful-links">
+          <p>You might be looking for:</p>
+          <ul>
+            <li><a routerLink="/dashboard">Dashboard</a></li>
+            <li><a routerLink="/login">Login</a></li>
+          </ul>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,59 @@
+.event-card {
+  margin-bottom: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.event-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.event-location,
+.event-date {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-gray);
+  font-size: 0.9rem;
+}
+
+.event-description {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--text-black);
+}
+
+.event-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.event-author {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-gray);
+  font-size: 0.9rem;
+}
+
+.author-name {
+  font-weight: 500;
+}
+
+.event-registered button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}

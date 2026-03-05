@@ -1,0 +1,123 @@
+<div class="event-container">
+  <!-- Loading Spinner -->
+  <div *ngIf="loading()" class="loading-container">
+    <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+    <p>Loading event...</p>
+  </div>
+
+  <!-- Error Message -->
+  <mat-card *ngIf="errMsg() && !loading()" class="error-card">
+    <mat-card-content>
+      <div class="error-message">
+        <mat-icon color="warn">error</mat-icon>
+        <span>{{ errMsg() }}</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Event Content -->
+  <div *ngIf="data() && !loading()" class="event-content">
+    <div class="event-layout">
+      <!-- Left Side - Main Event Card -->
+      <div class="event-main">
+        <mat-card class="event-card">
+          <mat-card-header>
+            <mat-card-title>{{ data()?.title }}</mat-card-title>
+            <mat-card-subtitle>
+              <div class="event-meta">
+                <mat-chip [color]="getStatusColor()" selected>
+                  <mat-icon matChipAvatar>{{ getStatusIcon() }}</mat-icon>
+                  {{ getEventStatus() | titlecase }}
+                </mat-chip>
+                <span class="created-by">Created by: {{ data()?.createdBy?.fullName }}</span>
+              </div>
+            </mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="event-description">
+              {{ data()?.description }}
+            </div>
+            
+            <div class="event-details">
+              <div class="event-detail">
+                <mat-icon>event</mat-icon>
+                <span>{{ formatDate(data()?.eventDate || '') }}</span>
+              </div>
+              <div class="event-detail">
+                <mat-icon>location_on</mat-icon>
+                <span>{{ data()?.location }}</span>
+              </div>
+              <div class="event-detail">
+                <mat-icon>people</mat-icon>
+                <span>{{ getRegisteredUserCount() }} registered</span>
+              </div>
+              <div class="event-detail">
+                <mat-icon>schedule</mat-icon>
+                <span>Created: {{ formatDate(data()?.createdAt || '') }}</span>
+              </div>
+            </div>
+
+            <!-- Registration Button -->
+            <div class="registration-section" *ngIf="isEventUpcoming()">
+              <button 
+                mat-raised-button 
+                [color]="isUserRegistered() ? 'accent' : 'primary'"
+                [disabled]="registering()"
+                (click)="registerForEvent()"
+                *ngIf="!isUserRegistered()">
+                <mat-icon>event_available</mat-icon>
+                <span *ngIf="!registering()">Register for Event</span>
+                <span *ngIf="registering()">Registering...</span>
+              </button>
+              
+              <div *ngIf="isUserRegistered()" class="registered-status">
+                <mat-icon color="accent">check_circle</mat-icon>
+                <span>You are registered for this event</span>
+              </div>
+            </div>
+
+            <div *ngIf="isEventPast()" class="past-event-notice">
+              <mat-icon>event_busy</mat-icon>
+              <span>This event has already ended</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+                <mat-divider></mat-divider>
+
+        <!-- Comments Section -->
+        <app-comments 
+          [itemId]="data()?._id || ''" 
+          itemType="event"
+          placeholder="Share your thoughts about this event...">
+        </app-comments>
+      </div>
+
+      <!-- Right Side - Registered Users -->
+      <div class="event-sidebar">
+        <mat-card class="registered-users-card">
+          <mat-card-header>
+            <mat-card-title>
+              <mat-icon>people</mat-icon>
+              Registered Users ({{ getRegisteredUserCount() }})
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div *ngIf="getRegisteredUserCount() === 0" class="no-registrations">
+              <mat-icon>person_outline</mat-icon>
+              <p>No registrations yet</p>
+            </div>
+            <mat-list *ngIf="getRegisteredUserCount() > 0">
+              <mat-list-item *ngFor="let user of data()?.registeredUsers">
+                <mat-icon matListItemIcon>person</mat-icon>
+                <div matListItemTitle>{{ user.fullName }}</div>
+                <div matListItemLine>{{ user.email }}</div>
+              </mat-list-item>
+            </mat-list>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>
